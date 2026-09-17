@@ -6,6 +6,8 @@ import { app } from "../config/firebase.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === "production" || process.env.RENDER === "true";
+
 export const login = async (req, res) => {
   try {
     const { token } = req.body;
@@ -54,8 +56,8 @@ export const login = async (req, res) => {
 
     res.cookie("session", sessionId, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -86,8 +88,8 @@ export const logout = async (req, res) => {
 
     res.clearCookie("session", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
 
     return res
