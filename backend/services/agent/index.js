@@ -1,0 +1,36 @@
+import dns from "dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import router from "./routes/agent.route.js";
+dotenv.config();
+
+const app = express();
+
+app.use(express.json());
+
+const port = process.env.PORT;
+
+app.use("/", router);
+
+app.get("/", (_req, res) => {
+  res.status(200).json({ service: "agent", status: "ok" });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  if (err.status) {
+    return res.status(err.status).json(err.data);
+  }
+
+  return res
+    .status(500)
+    .json({ success: false, message: err.message || "Internal Server Error" });
+});
+
+app.listen(port, async () => {
+  await connectDB();
+  console.log(`agent service running on ${port}`);
+});

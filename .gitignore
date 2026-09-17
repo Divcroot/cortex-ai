@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Build output
+frontend/dist/
+frontend/build/
+**/dist/
+**/build/
+
+# Logs
+*.log
+logs/
+
+# Local uploads / runtime data
+backend/**/uploads/
+backend/**/temp/
+backend/**/.cache/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+
+# Firebase / deployment secrets
+backend/services/auth/serviceAccount.json
+
+# Local database files
+*.sqlite
+*.db
