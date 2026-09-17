@@ -21,21 +21,7 @@ const allowedOrigins = [
   "http://localhost:3000",
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-
-      callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  }),
-);
-
-app.options("*", cors({
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -45,7 +31,9 @@ app.options("*", cors({
     callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 
 app.use("/uploads", express.static("uploads"));
 app.use(helmet());
